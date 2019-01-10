@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "a131ff05-895d-484b-974b-07036ebf99cc",
+		"name": "Request Test",
+		"description": "Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://reqres.in/api/users?page=2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c3f5235e-3368-48b9-bc5f-44679b853a24",
+						"exec": [
+							"// Check status code should be 200.",
+							"pm.test(\"Check status code should be 200.\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Check 'page' value in response same as parameter value in url.",
+							"pm.test(\"Check 'page' value in response same as parameter value in url.\", () => {",
+							"    pm.expect(pm.response.json().page).to.be.equal(parseInt(pm.request.url.getQueryString('page').split('=')[1]));",
+							"});",
+							"",
+							"// Check data not empty.",
+							"pm.test(\"Check data not empty.\", () => {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.length).to.not.be.equal(0);",
+							"})",
+							"",
+							"// Check \"per_page\" same as length of data.",
+							"pm.test(\"Check 'per_page' same as length of data.\", () => {",
+							"    var per_page = pm.response.json().per_page;",
+							"    var dataLength = pm.response.json().data.length;",
+							"    pm.expect(per_page).to.be.equal(dataLength);",
+							"});",
+							"",
+							"// Check total is greater than 0.",
+							"pm.test(\"Check total is greater than 0.\", () => {",
+							"    var total = pm.response.json().total;",
+							"    pm.expect(total).to.not.be.equal(0);",
+							"})",
+							"",
+							"// Check total_page is greater than pages 0.",
+							"pm.test(\"Check 'total_page' is greater than 0.\", () => {",
+							"    var total_page = pm.response.json().total_page;",
+							"    pm.expect(total_page).to.not.be.equal(0);",
+							"})",
+							"",
+							"// Check response is a JSON.",
+							"pm.test(\"Check response is a JSON.\", () => {",
+							"    pm.response.to.have.jsonBody();",
+							"})",
+							"",
+							"// Validate time response below 500ms.",
+							"pm.test(\"Validate time response below 500ms.\", () => {",
+							"    var responseTime = pm.response.responseTime;",
+							"    pm.expect(responseTime).to.be.below(500);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users?page=1",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
